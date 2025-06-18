@@ -2,6 +2,7 @@ import { NAVBAR_HEIGHT } from "@/lib/constants";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { Button } from "./ui/button";
 
 const Navbar = () => {
   return (
@@ -19,10 +20,10 @@ const Navbar = () => {
             <div className="flex items-center gap-3">
               <Image
                 src="/logo.svg"
-                alt="Rentiful Logo"
-                width={24}
-                height={24}
-                className="w-10 h-10"
+                alt="Lovehouse Logo"
+                width={30}
+                height={30}
+                className="w-8 h-8"
               />
               <div className="text-xl font-bold">
                 LOVE
@@ -31,6 +32,27 @@ const Navbar = () => {
                 </span>
               </div>
             </div>
+          </Link>
+        </div>
+        <p className="text-primary-200 hidden md:block">
+          고급 검색을 통해 당신에게 딱 맞는 임대 아파트를 찾아보세요!
+        </p>
+        <div className="flex items-center gap-5">
+          <Link href="/signin">
+            <Button
+              variant="outline"
+              className="text-white border-white bg-transparent hover:bg-white hover:text-primary-700 rounded-lg"
+            >
+              로그인
+            </Button>
+          </Link>
+          <Link href="/signup">
+            <Button
+              variant="outline"
+              className="text-white bg-secondary-600 hover:bg-white hover:text-primary-700 rounded-lg"
+            >
+              회원가입
+            </Button>
           </Link>
         </div>
       </div>

@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "Ownglyph_corncorn-Rg";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/2412-1@1.0/Ownglyph_corncorn-Rg.woff2")
+    format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
 *,
 *::before,
 *::after {
@@ -14,6 +22,7 @@ body,
 .app {
   height: 100%;
   width: 100%;
+  font-family: "Ownglyph_corncorn-Rg";
   @apply text-sm;
   @apply bg-white;
   @apply dark:bg-black;
