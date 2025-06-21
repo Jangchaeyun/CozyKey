@@ -13,6 +13,7 @@ import {
 } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 import { useRouter, usePathname } from "next/navigation";
+import { initialState } from "@/state";
 
 Amplify.configure({
   Auth: {
@@ -162,7 +163,11 @@ const Auth = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div className="h-full">
-      <Authenticator components={components} formFields={formFields}>
+      <Authenticator
+        initialState={pathname.includes("signup") ? "signUp" : "signIn"}
+        components={components}
+        formFields={formFields}
+      >
         {() => <>{children}</>}
       </Authenticator>
     </div>
