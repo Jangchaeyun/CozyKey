@@ -71,7 +71,7 @@ export const createNewUserInDatabase = async (
     body: {
       cognitoId: user.userId,
       name: user.username,
-      email: idToken?.payload?.email || "",
+      email: idToken.payload?.email || "",
       phoneNumber: "",
     },
   });

@@ -1,3 +1,4 @@
+import { createNewUserInDatabase } from "@/lib/utils";
 import { Manager, Tenant } from "@/types/prismaTypes";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { fetchAuthSession, getCurrentUser } from "aws-amplify/auth";
@@ -28,10 +29,22 @@ export const api = createApi({
           const endpoint =
             userRole === "manager"
               ? `/managers/${user.userId}`
-              : `tenants/${user.userId}`;
+              : `/tenants/${user.userId}`;
           let userDetailsResponse = await fetchWithBQ(endpoint);
 
           // 사용자가 존재하지 않으면 새 사용자를 생성합니다.
+          if (
+            userDetailsResponse.error &&
+            userDetailsResponse.error.status === 404
+          ) {
+            userDetailsResponse = await createNewUserInDatabase(
+              user,
+              idToken,
+              userRole,
+              fetchWithBQ
+            );
+          }
+
           return {
             data: {
               cognitoInfo: { ...user },
@@ -47,4 +60,4 @@ export const api = createApi({
   }),
 });
 
-export const {} = api;
+export const { useGetAuthUserQuery } = api;
