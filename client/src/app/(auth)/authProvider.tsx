@@ -13,7 +13,6 @@ import {
 } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 import { useRouter, usePathname } from "next/navigation";
-import { initialState } from "@/state";
 
 Amplify.configure({
   Auth: {

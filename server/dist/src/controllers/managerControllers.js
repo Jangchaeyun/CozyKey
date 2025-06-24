@@ -48,7 +48,7 @@ const createManager = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     catch (error) {
         res
             .status(500)
-            .json({ message: `Error retrieving tenant: ${error.message}` });
+            .json({ message: `Error creating manager: ${error.message}` });
     }
 });
 exports.createManager = createManager;
