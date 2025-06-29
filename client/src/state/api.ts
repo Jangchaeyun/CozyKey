@@ -16,7 +16,15 @@ export const api = createApi({
     },
   }),
   reducerPath: "api",
-  tagTypes: [],
+  tagTypes: [
+    "Managers",
+    "Tenants",
+    "Properties",
+    "PropertyDetails",
+    "Leases",
+    "Payments",
+    "Applications",
+  ],
   endpoints: (build) => ({
     getAuthUser: build.query<User, void>({
       queryFn: async (_, _queryApi, _extraoptions, fetchWithBQ) => {
@@ -30,9 +38,10 @@ export const api = createApi({
             userRole === "manager"
               ? `/managers/${user.userId}`
               : `/tenants/${user.userId}`;
+
           let userDetailsResponse = await fetchWithBQ(endpoint);
 
-          // 사용자가 존재하지 않으면 새 사용자를 생성합니다.
+          // if user doesn't exist, create new user
           if (
             userDetailsResponse.error &&
             userDetailsResponse.error.status === 404

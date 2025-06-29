@@ -1,3 +1,5 @@
+"use client";
+
 import { NAVBAR_HEIGHT } from "@/lib/constants";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,7 +17,7 @@ import {
 } from "@radix-ui/react-dropdown-menu";
 import { DropdownMenuSeparator } from "./ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { SidebarTrigger } from "./ui/sidebar";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 const Navbar = () => {
   const { data: authUser } = useGetAuthUserQuery();
@@ -37,7 +39,7 @@ const Navbar = () => {
     >
       <div className="flex justify-between items-center w-full py-3 px-8 bg-primary-700 text-white">
         <div className="flex items-center gap-4 md:gap-6">
-          {!isDashboardPage && (
+          {isDashboardPage && (
             <div className="md:hidden">
               <SidebarTrigger />
             </div>
@@ -56,9 +58,9 @@ const Navbar = () => {
                 className="w-8 h-8"
               />
               <div className="text-xl font-bold">
-                LOVE
+                COZY
                 <span className="text-secondary-500 font-light hover:!text-primary-300">
-                  HOUSE
+                  KEY
                 </span>
               </div>
             </div>
@@ -75,7 +77,7 @@ const Navbar = () => {
                 )
               }
             >
-              {authUser.userRole?.toLowerCase() === "manger" ? (
+              {authUser.userRole?.toLowerCase() === "manager" ? (
                 <>
                   <Plus className="h-4 w-4" />
                   <span className="hidden md:block ml-2">
@@ -121,7 +123,7 @@ const Navbar = () => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="bg-white text-primary-700">
                   <DropdownMenuItem
-                    className="cursor-pointer hover:!bg-primary-700 hover:!text-primary-100"
+                    className="cursor-pointer hover:!bg-primary-700 hover:!text-primary-100 font-bold"
                     onClick={() => {
                       router.push(
                         authUser.userRole?.toLowerCase() === "manager"
@@ -136,12 +138,12 @@ const Navbar = () => {
                   <DropdownMenuSeparator className="bg-primary-200" />
                   <DropdownMenuItem
                     className="cursor-pointer hover:!bg-primary-700 hover:!text-primary-100"
-                    onClick={() => {
+                    onClick={() =>
                       router.push(
                         `/${authUser.userRole?.toLowerCase()}s/settings`,
                         { scroll: false }
-                      );
-                    }}
+                      )
+                    }
                   >
                     설정
                   </DropdownMenuItem>

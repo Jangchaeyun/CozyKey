@@ -10,10 +10,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   console.log("authUser:", authUser);
 
   return (
-    <div>
+    <div className="w-full h-full">
       <Navbar />
       <main
-        className={`h-full flex w-full flex-col pt-[${NAVBAR_HEIGHT}px]`}
+        className={`h-full flex w-full flex-col`}
         style={{ paddingTop: `${NAVBAR_HEIGHT}px` }}
       >
         {children}
