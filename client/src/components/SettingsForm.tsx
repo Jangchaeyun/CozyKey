@@ -2,6 +2,8 @@ import { SettingsFormData, settingsSchema } from "@/lib/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useState } from "react";
 import { Form, useForm } from "react-hook-form";
+import { CustomFormField } from "./FormField";
+import { Button } from "./ui/button";
 
 const SettingsForm = ({
   initialData,
@@ -37,8 +39,40 @@ const SettingsForm = ({
       </div>
       <div className="bg-white rounded-xl p-6">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-            
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="space-y-6"
+          >
+            <CustomFormField name="name" label="이름" disabled={!editMode} />
+            <CustomFormField
+              name="email"
+              label="이메일"
+              type="email"
+              disabled={!editMode}
+            />
+            <CustomFormField
+              name="phoneNumber"
+              label="핸드폰번호"
+              disabled={!editMode}
+            />
+            <div className="pt-4 flex justify-between">
+              <Button
+                type="button"
+                onClick={toogleEditMode}
+                className="bg-secondary-500 text-white hover:bg-secondary-600"
+              >
+                {editMode ? "취소" : "수정"}
+              </Button>
+              {editMode && (
+                <Button
+                  type="submit"
+                  onClick={toogleEditMode}
+                  className="bg-primary-700 text-white hover:bg-primary-800"
+                >
+                  변경사항 저장
+                </Button>
+              )}
+            </div>
           </form>
         </Form>
       </div>
