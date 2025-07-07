@@ -164,14 +164,83 @@ export const createApplication = async (
   }
 };
 
-export const getLeasePayments = async (
+export const updateApplicationStatus = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const application = await prisma.application.findUnique({
+      where: { id: Number(id) },
+      include: {
+        property: true,
+        tenant: true,
+      },
+    });
+
+    if (!application) {
+      res.status(404).json({ message: "Application not found." });
+      return;
+    }
+
+    if (status === "Approved") {
+      const newLease = await prisma.lease.create({
+        data: {
+          startDate: new Date(),
+          endDate: new Date(
+            new Date().setFullYear(new Date().getFullYear() + 1)
+          ),
+          rent: application.property.pricePerMonth,
+          deposit: application.property.securityDeposit,
+          propertyId: application.propertyId,
+          tenantCognitoId: application.tenantCognitoId,
+        },
+      });
+
+      // 세입자를 연결하기 위해 속성을 업데이트하세요
+      await prisma.property.update({
+        where: { id: application.propertyId },
+        data: {
+          tenants: {
+            connect: { cognitoId: application.tenantCognitoId },
+          },
+        },
+      });
+
+      // 새로운 임대 ID로 애플리케이션을 업데이트하세요.
+      await prisma.application.update({
+        where: { id: Number(id) },
+        data: { status, leaseId: newLease.id },
+        include: {
+          property: true,
+          tenant: true,
+          lease: true,
+        },
+      });
+    } else {
+      // 신청 상태 업데이트(거부됨 및 기타 상태 모두)
+      await prisma.application.update({
+        where: { id: Number(id) },
+        data: { status },
+      });
+
+      // 업데이트된 애플리케이션 세부 정보로 응답하세요
+      const updateApplication = await prisma.application.findUnique({
+        where: { id: Number(id) },
+        include: {
+          property: true,
+          tenant: true,
+          lease: true,
+        },
+      });
+
+      res.json(updateApplication);
+    }
   } catch (error: any) {
     res
       .status(500)
-      .json({ message: `Error retrieving lease payments: ${error.message}` });
+      .json({ message: `Error updating application status: ${error.message}` });
   }
 };
