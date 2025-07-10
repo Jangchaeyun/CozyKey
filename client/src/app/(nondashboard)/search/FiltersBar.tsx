@@ -3,10 +3,18 @@ import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { debounce } from "lodash";
-import { cleanParams, cn } from "@/lib/utils";
+import { cleanParams, cn, formatPriceValue } from "@/lib/utils";
 import { useAppSelector } from "@/state/redux";
 import { Button } from "@/components/ui/button";
-import { Filter } from "lucide-react";
+import { Filter, Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const FiltersBar = () => {
   const dispatch = useDispatch();
@@ -74,6 +82,48 @@ const FiltersBar = () => {
           <Filter className="w-4 h-4" />
           <span>모든 필터</span>
         </Button>
+        {/* Search Location */}
+        <div className="flex items-center">
+          <Input
+            placeholder="위치 검색"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            className="w-40 rounded-l-xl rounded-r-none border-primary-400 border-r-0"
+          />
+          <Button
+            // onClick={handleLocationSearch}
+            className={`rounded-r-xl rounded-l-none border-primary-400 shadow-none border hover:bg-primary-700 hover:text-primary-50`}
+          >
+            <Search className="w-4 h-4" />
+          </Button>
+        </div>
+
+        {/* Price Range */}
+        <div className="flex gap-1">
+          {/* Minimum Price Selector */}
+          <Select
+            value={filters.priceRange[0]?.toString() || "any"}
+            onValueChange={(value) =>
+              handleFilterChange("priceRange", value, true)
+            }
+          >
+            <SelectTrigger className="w-22 rounded-xl border-primary-400">
+              <SelectValue>
+                {formatPriceValue(filters.priceRange[0], true)}
+              </SelectValue>
+            </SelectTrigger>
+            <SelectTrigger>
+              <SelectContent className="bg-white">
+                <SelectItem value="any">최소 가격</SelectItem>
+                {[500, 1000, 1500, 2000, 3000, 5000, 10000].map((price) => (
+                  <SelectItem key={price} value={price.toString()}>
+                    ₩{(price * 1300).toLocaleString()}+
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </SelectTrigger>
+          </Select>
+        </div>
       </div>
     </div>
   );
