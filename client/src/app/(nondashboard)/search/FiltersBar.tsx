@@ -112,16 +112,76 @@ const FiltersBar = () => {
                 {formatPriceValue(filters.priceRange[0], true)}
               </SelectValue>
             </SelectTrigger>
-            <SelectTrigger>
-              <SelectContent className="bg-white">
-                <SelectItem value="any">최소 가격</SelectItem>
-                {[500, 1000, 1500, 2000, 3000, 5000, 10000].map((price) => (
-                  <SelectItem key={price} value={price.toString()}>
-                    ₩{(price * 1300).toLocaleString()}+
-                  </SelectItem>
-                ))}
-              </SelectContent>
+            <SelectContent className="bg-white">
+              <SelectItem value="any">최소 가격</SelectItem>
+              {[500, 1000, 1500, 2000, 3000, 5000, 10000].map((price) => (
+                <SelectItem key={price} value={price.toString()}>
+                  ₩{(price * 1300).toLocaleString()}+
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {/* Maximum Price Selector */}
+          <Select
+            value={filters.priceRange[1]?.toString() || "any"}
+            onValueChange={(value) =>
+              handleFilterChange("priceRange", value, false)
+            }
+          >
+            <SelectTrigger className="w-22 rounded-xl border-primary-400">
+              <SelectValue>
+                {formatPriceValue(filters.priceRange[1], false)}
+              </SelectValue>
             </SelectTrigger>
+            <SelectContent className="bg-white">
+              <SelectItem value="any">최대 가격</SelectItem>
+              {[1000, 2000, 3000, 5000, 10000].map((price) => (
+                <SelectItem key={price} value={price.toString()}>
+                  ₩{(price * 1300).toLocaleString()}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        {/* Beds and Baths */}
+        <div className="flex gap-1">
+          {/* Beds */}
+          <Select
+            value={filters.beds}
+            onValueChange={(value) => handleFilterChange("beds", value, null)}
+          >
+            <SelectTrigger className="w-26 rounded-xl border-primary-400">
+              <SelectValue placeholder="침대" />
+            </SelectTrigger>
+            <SelectContent className="bg-white">
+              <SelectItem value="any">모든 침대</SelectItem>
+              <SelectItem value="1">1+ 침대</SelectItem>
+              <SelectItem value="2">2+ 침대</SelectItem>
+              <SelectItem value="3">3+ 침대</SelectItem>
+              <SelectItem value="4">4+ 침대</SelectItem>
+            </SelectContent>
+          </Select>
+
+          {/* Baths */}
+          <Select
+            value={filters.priceRange[1]?.toString() || "any"}
+            onValueChange={(value) =>
+              handleFilterChange("priceRange", value, false)
+            }
+          >
+            <SelectTrigger className="w-22 rounded-xl border-primary-400">
+              <SelectValue>
+                {formatPriceValue(filters.priceRange[1], false)}
+              </SelectValue>
+            </SelectTrigger>
+            <SelectContent className="bg-white">
+              <SelectItem value="any">최대 가격</SelectItem>
+              {[1000, 2000, 3000, 5000, 10000].map((price) => (
+                <SelectItem key={price} value={price.toString()}>
+                  ₩{(price * 1300).toLocaleString()}
+                </SelectItem>
+              ))}
+            </SelectContent>
           </Select>
         </div>
       </div>
