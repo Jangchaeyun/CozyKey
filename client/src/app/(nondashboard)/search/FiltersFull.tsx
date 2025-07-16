@@ -243,6 +243,42 @@ const FiltersFull = () => {
             ))}
           </div>
         </div>
+        {/* 에서 사용 가능 */}
+        <div>
+          <h4 className="font-bold mb-2">사용 가능</h4>
+          <Input
+            type="date"
+            value={
+              localFilters.availableFrom !== "any"
+                ? localFilters.availableFrom
+                : ""
+            }
+            onChange={(e) =>
+              setLocalFilters((prev) => ({
+                ...prev,
+                availableFrom: e.target.value ? e.target.value : "any",
+              }))
+            }
+            className="rounded-xl"
+          />
+        </div>
+
+        {/* 적용 및 재설정 버튼 */}
+        <div className="flex gap-4 mt-6">
+          <Button
+            onClick={handleSubmit}
+            className="flex-1 bg-primary-700 text-white rounded-xl"
+          >
+            적용
+          </Button>
+          <Button
+            onClick={handleReset}
+            variant="outline"
+            className="flex-1 rounded-xl"
+          >
+            필터 재설정
+          </Button>
+        </div>
       </div>
     </div>
   );
