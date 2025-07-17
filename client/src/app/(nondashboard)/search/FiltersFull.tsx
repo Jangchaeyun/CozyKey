@@ -1,7 +1,7 @@
 import { FiltersState, initialState, setFilters } from "@/state";
 import { useAppSelector } from "@/state/redux";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { debounce } from "lodash";
 import { cleanParams, cn, formatEnumString } from "@/lib/utils";
