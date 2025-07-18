@@ -82,6 +82,9 @@ export const api = createApi({
       invalidatesTags: (result) => [{ type: "Managers", id: result?.id }],
     }),
   }),
+
+  // property related endpoint
+  
 });
 
 export const {
