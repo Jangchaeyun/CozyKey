@@ -49,33 +49,39 @@ export const getProperties = async (
 
     if (priceMax) {
       whereConditions.push(
-        Prisma.sql`p."pricePerMonth" <= ${Number(priceMin)}`
+        Prisma.sql`p."pricePerMonth" <= ${Number(priceMax)}`
       );
     }
+
     if (beds && beds !== "any") {
       whereConditions.push(Prisma.sql`p.beds >= ${Number(beds)}`);
     }
+
     if (baths && baths !== "any") {
       whereConditions.push(Prisma.sql`p.baths >= ${Number(baths)}`);
     }
+
     if (squareFeetMin) {
       whereConditions.push(
         Prisma.sql`p."squareFeet" >= ${Number(squareFeetMin)}`
       );
     }
+
     if (squareFeetMax) {
       whereConditions.push(
         Prisma.sql`p."squareFeet" <= ${Number(squareFeetMax)}`
       );
     }
+
     if (propertyType && propertyType !== "any") {
       whereConditions.push(
         Prisma.sql`p."propertyType" = ${propertyType}::"PropertyType"`
       );
     }
+
     if (amenities && amenities !== "any") {
       const amenitiesArray = (amenities as string).split(",");
-      whereConditions.push(Prisma.sql`p.amenities @ > ${amenitiesArray}`);
+      whereConditions.push(Prisma.sql`p.amenities @> ${amenitiesArray}`);
     }
 
     if (availableFrom && availableFrom !== "any") {
@@ -86,9 +92,9 @@ export const getProperties = async (
         if (!isNaN(date.getTime())) {
           whereConditions.push(
             Prisma.sql`EXISTS (
-                SELECT 1 FROM "Lease" l
-                WHERE l."propertyId" = p.id
-                AND l."startDate" <= ${date.toISOString()}
+              SELECT 1 FROM "Lease" l 
+              WHERE l."propertyId" = p.id 
+              AND l."startDate" <= ${date.toISOString()}
             )`
           );
         }
@@ -99,12 +105,12 @@ export const getProperties = async (
       const lat = parseFloat(latitude as string);
       const lng = parseFloat(longitude as string);
       const radiusInKilometers = 1000;
-      const degrees = radiusInKilometers / 111; // 킬로미터를 도로 변환합니다
+      const degrees = radiusInKilometers / 111; // Converts kilometers to degrees
 
       whereConditions.push(
         Prisma.sql`ST_DWithin(
           l.coordinates::geometry,
-          ST_SetSRTD(ST_MakePoint(${lng}, ${lat}), 4326);
+          ST_SetSRID(ST_MakePoint(${lng}, ${lat}), 4326),
           ${degrees}
         )`
       );
