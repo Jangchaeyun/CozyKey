@@ -1,4 +1,3 @@
-import { property } from "lodash";
 import { cleanParams, createNewUserInDatabase, withToast } from "@/lib/utils";
 import { Manager, Property, Tenant } from "@/types/prismaTypes";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
@@ -117,9 +116,9 @@ export const api = createApi({
     }),
 
     // tenant related endpoints
-    getTenant: build.query<Tenant, String>({
+    getTenant: build.query<Tenant, string>({
       query: (cognitoId) => `tenants/${cognitoId}`,
-      providesTags: (result) => [{ type: "Tenants", id: result?.id}],
+      providesTags: (result) => [{ type: "Tenants", id: result?.id }],
     }),
 
     addFavoriteProperty: build.mutation<

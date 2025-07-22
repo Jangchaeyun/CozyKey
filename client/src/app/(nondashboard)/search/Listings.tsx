@@ -1,4 +1,5 @@
 import Card from "@/components/Card";
+import CardCompact from "@/components/CardCompact";
 import {
   useAddFavoritePropertyMutation,
   useGetAuthUserQuery,
@@ -15,7 +16,7 @@ const Listings = () => {
   const { data: tenant } = useGetTenantQuery(
     authUser?.cognitoInfo?.userId || "",
     {
-      skip: !authUser?.cognitoInfo?.userId
+      skip: !authUser?.cognitoInfo?.userId,
     }
   );
   const [addFavorite] = useAddFavoritePropertyMutation();
@@ -75,7 +76,18 @@ const Listings = () => {
                 propertyLink={`/search/${property.id}`}
               />
             ) : (
-              <>another card</>
+              <CardCompact
+                key={property.id}
+                property={property}
+                isFavorite={
+                  tenant?.favorites?.some(
+                    (fav: Property) => fav.id === property.id
+                  ) || false
+                }
+                onFavoriteToggle={() => handleFavoriteToggle(property.id)}
+                showFavoriteButton={!!authUser}
+                propertyLink={`/search/${property.id}`}
+              />
             )
           )}
         </div>
