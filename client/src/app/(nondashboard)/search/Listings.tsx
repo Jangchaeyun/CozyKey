@@ -1,18 +1,24 @@
+import Card from "@/components/Card";
 import {
   useAddFavoritePropertyMutation,
   useGetAuthUserQuery,
   useGetPropertiesQuery,
+  useGetTenantQuery,
   useRemoveFavoritePropertyMutation,
 } from "@/state/api";
 import { useAppSelector } from "@/state/redux";
 import { Property } from "@/types/prismaTypes";
-import { view } from "framer-motion";
-import { property } from "lodash";
 import React from "react";
 
 const Listings = () => {
   const { data: authUser } = useGetAuthUserQuery();
-  const [addFavortie] = useAddFavoritePropertyMutation();
+  const { data: tenant } = useGetTenantQuery(
+    authUser?.cognitoInfo?.userId || "",
+    {
+      skip: !authUser?.cognitoInfo?.userId
+    }
+  );
+  const [addFavorite] = useAddFavoritePropertyMutation();
   const [removeFavorite] = useRemoveFavoritePropertyMutation();
   const viewMode = useAppSelector((state) => state.global.viewMode);
   const filters = useAppSelector((state) => state.global.filters);
@@ -26,7 +32,7 @@ const Listings = () => {
   const handleFavoriteToggle = async (propertyId: number) => {
     if (!authUser) return;
 
-    const isFavorite = authUser.userInfo.favorites.some(
+    const isFavorite = tenant?.favorites?.some(
       (fav: Property) => fav.id === propertyId
     );
 
@@ -36,7 +42,7 @@ const Listings = () => {
         propertyId,
       });
     } else {
-      await addFavortie({
+      await addFavorite({
         cognitoId: authUser.cognitoInfo.userId,
         propertyId,
       });
@@ -55,7 +61,22 @@ const Listings = () => {
       <div className="flex">
         <div className="p-4 w-full">
           {properties?.map((property) =>
-            viewMode === "grid" ? <>같은 카드</> : <>another card</>
+            viewMode === "grid" ? (
+              <Card
+                key={property.id}
+                property={property}
+                isFavorite={
+                  tenant?.favorites?.some(
+                    (fav: Property) => fav.id === property.id
+                  ) || false
+                }
+                onFavoriteToggle={() => handleFavoriteToggle(property.id)}
+                showFavoriteButton={!!authUser}
+                propertyLink={`/search/${property.id}`}
+              />
+            ) : (
+              <>another card</>
+            )
           )}
         </div>
       </div>

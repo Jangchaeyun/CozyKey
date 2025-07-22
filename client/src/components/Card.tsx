@@ -1,5 +1,6 @@
-import { Heart } from "lucide-react";
+import { Bath, Bed, Heart, House, Star } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useState } from "react";
 
 const Card = ({
@@ -25,30 +26,78 @@ const Card = ({
             onError={() => setImgSrc("/placeholder.jpg")}
           />
         </div>
-        <div className="absoulte bottom-4 left-4 flex gap-2">
+        <div className="absolute bottom-4 left-4 flex gap-2">
           {property.isPetsAllowed && (
-            <span className="bg-white/80 text-black text-sm font-semibold px-2 py-1 rounded-full">
+            <span className="bg-white/80 text-black text-xs font-semibold px-2 py-1 rounded-full">
               애완동물 가능
             </span>
           )}
           {property.isParkingIncluded && (
             <span className="bg-white/80 text-black text-xs font-semibold px-2 py-1 rounded-full">
-              주차 포함
+              주차장 포함
             </span>
           )}
         </div>
         {showFavoriteButton && (
           <button
-            className="absoulte bottom-4 right-4 bg-white hover:bg-white/90 rounded-full p-2 cursor-pointer"
+            className="absolute bottom-4 right-4 bg-white hover:bg-white/90 rounded-full p-2 cursor-pointer"
             onClick={onFavoriteToggle}
           >
             <Heart
               className={`w-5 h-5 ${
-                isFavorite ? "text-red-500 full-red-500" : "text-gray-600"
+                isFavorite ? "text-red-500 fill-red-500" : "text-gray-600"
               }`}
             />
           </button>
         )}
+      </div>
+      <div className="p-4">
+        <h2 className="text-xl font-bold mb-1">
+          {propertyLink ? (
+            <Link
+              href={propertyLink}
+              className="hover:underline hover:text-blue-600"
+              scroll={false}
+            >
+              {property.name}
+            </Link>
+          ) : (
+            property.name
+          )}
+        </h2>
+        <p className="text-gray-600 mb-2">
+          {property?.location?.address}, {property?.location?.city}
+        </p>
+        <div className="flex justify-between items-center">
+          <div className="flex items-center mb-2">
+            <Star className="w-4 h-4 text-yellow-400 mr-1" />
+            <span className="font-semibold">
+              {property.averageRating.toFixed(1)}
+            </span>
+            <span className="text-gray-600 ml-1">
+              ({property.numberOfReviews} 리뷰)
+            </span>
+          </div>
+          <p className="text-lg font-bold mb-3">
+            {(property.pricePerMonth * 1300).toLocaleString()}원
+            <span className="text-gray-600 text-base font-normal"> /달</span>
+          </p>
+        </div>
+        <hr />
+        <div className="flex justify-between items-center gap-4 text-gray-600 mt-5">
+          <span className="flex items-center">
+            <Bed className="w-5 h-5 mr-2" />
+            {property.beds} 침대
+          </span>
+          <span className="flex items-center">
+            <Bath className="w-5 h-5 mr-2" />
+            {property.baths} 화장실
+          </span>
+          <span className="flex items-center">
+            <House className="w-5 h-5 mr-2" />
+            {(property.squareFeet * 0.028).toFixed(2)} 평
+          </span>
+        </div>
       </div>
     </div>
   );
