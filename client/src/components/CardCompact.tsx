@@ -31,7 +31,7 @@ const CardCompact = ({
             </span>
           )}
           {property.isParkingIncluded && (
-            <span className="bg-white/80 text-black text-xs font-semibold px-2 py-1 rounded-full">
+            <span className="bg-white/80 text-black text-xs font-semibold px-2 py-1 rounded-full w-fit">
               주차장
             </span>
           )}
