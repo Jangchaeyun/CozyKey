@@ -1,7 +1,56 @@
+"use client";
+
+import Card from "@/components/Card";
+import Header from "@/components/Header";
+import Loading from "@/components/Loading";
+import {
+  useGetAuthUserQuery,
+  useGetPropertiesQuery,
+  useGetTenantQuery,
+} from "@/state/api";
 import React from "react";
 
 const Favorites = () => {
-  return <div>Favorites</div>;
+  const { data: authUser } = useGetAuthUserQuery();
+  const { data: tenant } = useGetTenantQuery(
+    authUser?.cognitoInfo?.userId || "",
+    {
+      skip: !authUser?.cognitoInfo?.userId,
+    }
+  );
+
+  const {
+    data: favoriteProperties,
+    isLoading,
+    error,
+  } = useGetPropertiesQuery(
+    { favoriteIds: tenant?.favorites?.map((fav: { id: number }) => fav.id) },
+    { skip: !tenant?.favorites || tenant?.favorites.length === 0 }
+  );
+
+  if (isLoading) return <Loading />;
+  if (error) return <div>즐겨찾기 에러 로딩</div>;
+
+  return (
+    <div className="dashboard-container">
+      <Header title="즐겨찾는 속성" subtitle="부동산 매물 검색 및 관리" />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {favoriteProperties?.map((property) => (
+          <Card
+            key={property.id}
+            property={property}
+            isFavorite={true}
+            onFavoriteToggle={() => {}}
+            showFavoriteButton={false}
+            propertyLink={`/tenants/residences/${property.id}`}
+          />
+        ))}
+      </div>
+      {(!favoriteProperties || favoriteProperties.length === 0) && (
+        <p>즐겨찾는 부동산이 없습니다.</p>
+      )}
+    </div>
+  );
 };
 
 export default Favorites;
