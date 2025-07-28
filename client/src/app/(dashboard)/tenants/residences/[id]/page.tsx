@@ -8,9 +8,55 @@ import {
   useGetPropertyQuery,
 } from "@/state/api";
 import { Lease, Property } from "@/types/prismaTypes";
-import { MapPin } from "lucide-react";
+import { CreditCard, Download, Edit, Mail, MapPin, User } from "lucide-react";
 import { useParams } from "next/navigation";
 import React from "react";
+
+const PaymentMenthod = () => {
+  return (
+    <div className="bg-white rounded-xl shadow-md overflow-hidden p-6 mt-10 md:mt-0 flex-1">
+      <h2 className="text-2xl font-bold mb-4">결제 방법</h2>
+      <p className="mb-4">요금제 결제 방식을 변경하세요.</p>
+      <div className="border rounded-lg p-6">
+        <div>
+          {/* Card Info */}
+          <div className="flex gap-10">
+            <div className="w-36 h-20 bg-blue-600 flex items-center justify-center rounded-md">
+              <span className="text-white text-2xl font-bold">VISA</span>
+            </div>
+            <div className="flex flex-col justify-between">
+              <div>
+                <div className="flex gap-5">
+                  <h3 className="text-lg font-semibold">
+                    2024년에 종료되는 비자
+                  </h3>
+                  <span className="text-sm font-medium border border-primary-700 text-primary-700 px-3 py-1 rounded-full">
+                    기본
+                  </span>
+                </div>
+                <div className="text-sm text-gray-500 flex items-center">
+                  <CreditCard className="w-4 h-4 mr-1" />
+                  <span>만료일 * 2024년 5월 26일</span>
+                </div>
+              </div>
+              <div className="text-sm text-gray-500 flex items-center">
+                <Mail className="w-4 h-4 mr-1" />
+                <span>sally@gmail.com</span>
+              </div>
+            </div>
+          </div>
+          <hr className="my-4" />
+          <div className="flex justify-end">
+            <button className="bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded-md flex items-center justify-center hover:bg-primary-700 hover:text-primary-50">
+              <Edit className="w-5 h-5 mr-2" />
+              <span>수정</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const ResidenceCard = ({
   property,
@@ -41,6 +87,43 @@ const ResidenceCard = ({
             {(currentLease.rent * 1300).toLocaleString()}원
             <span className="text-gray-500 text-sm font-moral">/ 박</span>
           </div>
+        </div>
+      </div>
+      {/* Date */}
+      <div>
+        <hr className="my-4" />
+        <div className="flex justify-between items-center">
+          <div className="xl:flex">
+            <div className="text-gray-500 mr-2">시작 일: </div>
+            <div className="font-semibold">
+              {new Date(currentLease.startDate).toLocaleDateString()}
+            </div>
+          </div>
+          <div className="border-[0.5px] border-primary-300 h-4" />
+          <div className="xl:flex">
+            <div className="text-gray-500 mr-2">마지막 일: </div>
+            <div className="font-semibold">
+              {new Date(currentLease.endDate).toLocaleDateString()}
+            </div>
+          </div>
+          <div className="border-[0.5px] border-primary-300 h-4" />
+          <div className="xl:flex">
+            <div className="text-gray-500 mr-2">다음 지불: </div>
+            <div className="font-semibold">
+              {new Date(currentLease.endDate).toLocaleDateString()}
+            </div>
+          </div>
+        </div>
+        <hr className="my-4" />
+        <div className="flex justify-end gap-2 w-full">
+          <button className="bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded-md flex items-center justify-center hover:bg-primary-700 hover:text-primary-50">
+            <User className="w-5 h-5 mr-2" />
+            매니저
+          </button>
+          <button className="bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded-md flex items-center justify-center hover:bg-primary-700 hover:text-primary-50">
+            <Download className="w-5 h-5 mr-2" />
+            계약서 다운로드
+          </button>
         </div>
       </div>
     </div>
@@ -80,7 +163,7 @@ const Residence = () => {
           {currentLease && (
             <ResidenceCard property={property} currentLease={currentLease} />
           )}
-          {/* <PaymentMenthod /> */}
+          <PaymentMenthod />
         </div>
         {/* <BillingHistory payments={payment || []} /> */}
       </div>
