@@ -23,7 +23,7 @@ const Properties = () => {
   return (
     <div className="dashboard-container">
       <Header
-        title="나의 속성"
+        title="나의 부동산"
         subtitle="귀하의 부동산 목록을 보고 관리하세요"
       />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
