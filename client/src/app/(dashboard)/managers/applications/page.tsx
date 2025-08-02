@@ -1,8 +1,11 @@
+"use client";
+
+import ApplicationCard from "@/components/ApplicationCard";
 import Header from "@/components/Header";
 import Loading from "@/components/Loading";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
-  useGetApplicationQuery,
+  useGetApplicationsQuery,
   useGetAuthUserQuery,
   useUpdateApplicationStatusMutation,
 } from "@/state/api";
@@ -16,7 +19,7 @@ const Applications = () => {
     data: applications,
     isLoading,
     isError,
-  } = useGetApplicationQuery(
+  } = useGetApplicationsQuery(
     {
       userId: authUser?.cognitoInfo?.userId,
       userType: "manager",
@@ -65,7 +68,15 @@ const Applications = () => {
                   tab === "all" || application.status.toLowerCase() === tab
               )
               .map((application) => (
-                <></>
+                <ApplicationCard
+                  key={application.id}
+                  application={application}
+                  userType="manager"
+                >
+                  <div className="flex justify-between gap-5 w-full pb-4 px-4">
+                    {/* Colored Section Status */}
+                  </div>
+                </ApplicationCard>
               ))}
           </TabsContent>
         ))}

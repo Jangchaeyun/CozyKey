@@ -222,7 +222,7 @@ export const api = createApi({
     }),
 
     // application related endpoits
-    getApplication: build.query<
+    getApplications: build.query<
       Application[],
       { userId?: string; userType?: string }
     >({
@@ -269,6 +269,6 @@ export const {
   useGetLeasesQuery,
   useGetPropertyLeasesQuery,
   useGetPaymentsQuery,
-  useGetApplicationQuery,
+  useGetApplicationsQuery,
   useUpdateApplicationStatusMutation,
 } = api;

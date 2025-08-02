@@ -19,7 +19,7 @@ export const listApplications = async (
       } else if (userType === "manager") {
         whereClause = {
           property: {
-            manageCognitoId: String(userId),
+            managerCognitoId: String(userId),
           },
         };
       }
@@ -38,11 +38,11 @@ export const listApplications = async (
       },
     });
 
-    function calculateNextPaymentDate(startDate: Date) {
+    function calculateNextPaymentDate(startDate: Date): Date {
       const today = new Date();
       const nextPaymentDate = new Date(startDate);
       while (nextPaymentDate <= today) {
-        nextPaymentDate.setMonth(nextPaymentDate.getMonth());
+        nextPaymentDate.setMonth(nextPaymentDate.getMonth() + 1);
       }
       return nextPaymentDate;
     }
@@ -80,7 +80,7 @@ export const listApplications = async (
   } catch (error: any) {
     res
       .status(500)
-      .json({ message: `Error retrieving application: ${error.message}` });
+      .json({ message: `Error retrieving applications: ${error.message}` });
   }
 };
 
