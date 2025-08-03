@@ -45,7 +45,7 @@ const ApplicationCard = ({
               </div>
             </div>
             <div className="text-xl font-semibold">
-              ${application.property.pricePerMonth}{" "}
+              {application.property.pricePerMonth.toLocaleString()}원{" "}
               <span className="text-sm font-normal">/ 달</span>
             </div>
           </div>

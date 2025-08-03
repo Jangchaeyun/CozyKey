@@ -9,6 +9,8 @@ import {
   useGetAuthUserQuery,
   useUpdateApplicationStatusMutation,
 } from "@/state/api";
+import { CircleCheckBig, Download, File, Hospital } from "lucide-react";
+import Link from "next/link";
 import React, { useState } from "react";
 
 const Applications = () => {
@@ -75,6 +77,90 @@ const Applications = () => {
                 >
                   <div className="flex justify-between gap-5 w-full pb-4 px-4">
                     {/* Colored Section Status */}
+                    <div
+                      className={`px-4 text-green-700 grow ${
+                        application.status === "Approved"
+                          ? "bg-green-100"
+                          : application.status === "Denied"
+                          ? "bg-red-100"
+                          : "bg-yellow-100"
+                      }`}
+                    >
+                      <div className="flex flex-wrap items-center">
+                        <File className="w-5 h-5 mr-2 flex-shrink-0" />
+                        <span className="mr-2">
+                          신청서 제출일{" "}
+                          {new Date(
+                            application.applicationDate
+                          ).toLocaleDateString()}
+                          .
+                        </span>
+                        <CircleCheckBig className="w-5 h-5 mr-2 flex-shrink-0" />
+                        <span
+                          className={`font-semibold ${
+                            application.status === "Approved"
+                              ? "text-green-500"
+                              : application.status === "Denied"
+                              ? "text-red-500"
+                              : "text-yellow-800"
+                          }`}
+                        >
+                          {application.status === "Approved" &&
+                            "이 신청은 승인되었습니다."}
+                          {application.status === "Denied" &&
+                            "이 신청은 거부되었습니다."}
+                          {application.status === "Pending" &&
+                            "이 신청서는 현재 검토 중입니다."}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-2">
+                      <Link
+                        href={`/managers/properties/${application.property.id}`}
+                        className={`bg-white border border-gray-300 text-gray-700 py-2 px-4
+                        rounded-md flex items-center justify-center hover:bg-primary-700 hover:text-primary-50`}
+                        scroll={false}
+                      >
+                        <Hospital className="w-5 h-5 mr-2" />
+                        부동산 세부정보
+                      </Link>
+                      {application.status === "Approved" && (
+                        <button
+                          className={`bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded-md flex items-center justify-center hover:bg-primary-700 hover:text-primary-50`}
+                        >
+                          <Download className="w-5 h-5 mr-2" />
+                          계약서 다운로그
+                        </button>
+                      )}
+                      {application.status === "Pending" && (
+                        <>
+                          <button
+                            className="px-4 py-2 text-sm text-white bg-green-600 rounded hover:bg-green-500"
+                            onClick={() =>
+                              handleStatusChange(application.id, "Approved")
+                            }
+                          >
+                            승인
+                          </button>
+                          <button
+                            className="px-4 py-2 text-sm text-white bg-red-600 rounded hover:bg-red-500"
+                            onClick={() =>
+                              handleStatusChange(application.id, "Denied")
+                            }
+                          >
+                            거부
+                          </button>
+                        </>
+                      )}
+                      {application.status === "Denied" && (
+                        <button
+                          className={`bg-gray-800 text-white py-2 px-4 rounded-md flex items-center justify-center hover:bg-secondary-500 hover:text-primary-50`}
+                        >
+                          사용자에게 문의하기
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </ApplicationCard>
               ))}
