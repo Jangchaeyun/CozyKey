@@ -1,3 +1,4 @@
+import { Application } from "./../types/prismaTypes.d";
 import { updateApplicationStatus } from "./../../../server/src/controllers/applicationControllers";
 import { cleanParams, createNewUserInDatabase, withToast } from "@/lib/utils";
 import {
@@ -251,6 +252,15 @@ export const api = createApi({
       }),
       invalidatesTags: ["Applications", "Leases"],
     }),
+
+    createApplication: build.mutation<Application, Partial<Application>>({
+      query: (body) => ({
+        url: `applications`,
+        method: "POST",
+        body: body,
+      }),
+      invalidatesTags: ["Applications"],
+    }),
   }),
 });
 
@@ -271,4 +281,5 @@ export const {
   useGetPaymentsQuery,
   useGetApplicationsQuery,
   useUpdateApplicationStatusMutation,
+  useCreateApplicationMutation,
 } = api;
